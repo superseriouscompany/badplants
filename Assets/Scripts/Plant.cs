@@ -1,16 +1,33 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using System.Text;
+using TMPro;
 
 public class Plant : MonoBehaviour {
+	public TextMeshProUGUI text;
+	string w = "b";
+	StringBuilder sb = new StringBuilder();
+	int tick = 0;
 
-	// Use this for initialization
-	void Start () {
-		print("hi");
-	}
+	void FixedUpdate () {
+		tick++;
+		if (tick % 25 != 0) { return; }
 
-	// Update is called once per frame
-	void Update () {
+		sb.Clear();
+		foreach(char c in w) {
+			switch(c) {
+				case 'b':
+					sb.Append("a");
+					break;
+				case 'a':
+					sb.Append("ab");
+					break;
+			}
+		}
 
+		w = sb.ToString();
+		text.text = w;
 	}
 }
