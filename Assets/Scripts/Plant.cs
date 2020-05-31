@@ -1,91 +1,91 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using System.Text;
-using TMPro;
-using System;
 
 public class Plant : MonoBehaviour {
-	public TextMeshProUGUI text;
 	public LineRenderer line;
 
-	string w = "b";
+	public float turtleStepLength = 1f;
+	public string state;
+
+	// check if turtle rendering is working
+	// FFF-FF-F-F+F+FF-F-FFF
+
 	StringBuilder sb = new StringBuilder();
 	int tick = 0;
-	List<Vector3> positions = new List<Vector3>() {
-		new Vector3(0,0,0),
-		new Vector3(0,1,0),
-		new Vector3(-1,2,0),
-		new Vector3(0,1,0),
-		new Vector3(1,2,0)
-	};
+	Turtle turtle;
+
+	void OnValidate() {
+		if (!Application.isPlaying) { return; }
+		turtle?.Render(state);
+	}
 
 	void Start() {
 		line.startWidth = 0.05f;
 		line.endWidth = 0.05f;
 
-		var turtle = new Turtle(line);
-		turtle.Render("F-F-F-F-F");
+		turtle = new Turtle(line, turtleStepLength);
+		turtle.Render(state);
 	}
 
-	void FixedUpdate () {
-		return;
-		tick++;
-		if (tick % 25 != 0) { return; }
+	void Update() {
+		if (Input.GetKeyUp(KeyCode.RightArrow)) {
+			Step();
+			turtle.Render(state);
+		}
+	}
 
+	void Step() {
 		sb.Clear();
-		foreach(char c in w) {
+		foreach(char c in state) {
 			switch(c) {
-				case 'b':
-					sb.Append("a");
+				case 'F':
+					sb.Append("F-F+F+FF-F-F+F");
 					break;
-				case 'a':
-					sb.Append("ab");
+				default:
+					sb.Append(c);
 					break;
 			}
 		}
 
-		w = sb.ToString();
-		print($"w={sb.ToString()}");
-
-		line.positionCount = positions.Count;
-		line.SetPositions(positions.ToArray());
-		foreach (char c in w) {
-
-		}
+		state = sb.ToString();
 	}
 }
 
 public class Turtle {
+	public float stepLength;
+
 	Vector3 position = new Vector3(0,0,0);
 	float theta = 90;
 	List<Vector3> points = new List<Vector3>();
 	LineRenderer line;
-	public Turtle(LineRenderer line) {
+	public Turtle(LineRenderer line, float stepLength = 1f) {
 		this.line = line;
+		this.stepLength = stepLength;
 	}
 
 	public void Render(string instructions) {
 		points.Clear();
+		position = Vector3.zero;
+		points.Add(Vector3.zero);
 		foreach(char c in instructions) {
 			switch(c) {
 				case 'F':
+					position.x = position.x + Mathf.Cos(theta * Mathf.PI / 180) * stepLength;
+					position.y = position.y + Mathf.Sin(theta * Mathf.PI / 180) * stepLength;
 					points.Add(new Vector3(position.x, position.y, position.z));
-					position.x = position.x + Mathf.Cos(theta * Mathf.PI / 180);
-					position.y = position.y + Mathf.Sin(theta * Mathf.PI / 180);
 					break;
 				case '+':
-					theta -= 90;
+					theta += 90;
 					break;
 				case '-':
-					theta += 90;
+					theta -= 90;
 					break;
 			}
 		}
 
 		line.positionCount = points.Count;
 		line.SetPositions(points.ToArray());
-
 	}
 }

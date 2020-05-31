@@ -292,8 +292,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4dac0ed64953b4911a4d4691a0a08202, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  text: {fileID: 0}
   line: {fileID: 1178373507}
+  turtleStepLength: 1
+  state: F-F-F-F
 --- !u!120 &1178373507
 LineRenderer:
   m_ObjectHideFlags: 0
