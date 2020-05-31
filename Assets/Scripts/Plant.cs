@@ -26,7 +26,7 @@ public class Plant : MonoBehaviour {
 		line.endWidth = 0.05f;
 
 		var turtle = new Turtle(line);
-		turtle.Render("F-F-F-F");
+		turtle.Render("F-F-F-F-F");
 	}
 
 	void FixedUpdate () {
@@ -47,6 +47,7 @@ public class Plant : MonoBehaviour {
 		}
 
 		w = sb.ToString();
+		print($"w={sb.ToString()}");
 
 		line.positionCount = positions.Count;
 		line.SetPositions(positions.ToArray());
@@ -83,6 +84,8 @@ public class Turtle {
 			}
 		}
 
-		Debug.Log($"{String.Join(",",points)}");
+		line.positionCount = points.Count;
+		line.SetPositions(points.ToArray());
+
 	}
 }
