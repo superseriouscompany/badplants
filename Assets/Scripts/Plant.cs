@@ -3,39 +3,55 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Plant : MonoBehaviour {
-	public LineRenderer line;
-
 	public float turtleStepLength = 1f;
-	public string state;
+	string state;
 
 	Turtle turtle;
 	LSystem lSystem;
 
 	void OnValidate() {
 		if (!Application.isPlaying) { return; }
+		if (state == null) { return; }
 		turtle?.Render(state);
 	}
 
 	void Start() {
-		line.startWidth = 0.05f;
-		line.endWidth = 0.05f;
+		turtle = new Turtle(turtleStepLength);
 
-		turtle = new Turtle(line, turtleStepLength);
+		var quadraticIsland = new KochCurve(
+			"F-F-F-F",
+			new Dictionary<char, string>() {
+				{'F', "F-F+F+FF-F-F+F"}
+			}
+		);
+
+		var triangle = new KochCurve(
+			"-F",
+			new Dictionary<char, string>() {
+				{'F', "F+F-F-F+F"}
+			}
+		);
+
+		var islands = new KochCurve(
+			"F+F+F+F",
+			new Dictionary<char, string>() {
+				{'F', "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF"},
+				{'f', "ffffff"}
+			}
+		);
+
+
+		var kochCurve = quadraticIsland;
+		lSystem = new LSystem(kochCurve.axiom, kochCurve.productions);
+		state = kochCurve.axiom;
+
 		turtle.Render(state);
-
-		lSystem = new LSystem(state, new Dictionary<char, string>() {
-			// quadratic Koch island
-			// {'F', "F-F+F+FF-F-F+F"}
-
-			// Koch triangle
-			{ 'F', "F+F-F-F+F"}
-		});
 	}
 
 	void Update() {
 		if (Input.GetKeyUp(KeyCode.RightArrow)) {
 			state = lSystem.StepForward();
-			turtle.Render(state);
 		}
+		turtle.Render(state);
 	}
 }

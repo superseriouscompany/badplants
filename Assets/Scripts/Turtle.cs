@@ -4,36 +4,42 @@ using UnityEngine;
 public class Turtle {
 	public float stepLength;
 
-	Vector3 position = new Vector3(0,0,0);
-	float theta = 90;
-	List<Vector3> points = new List<Vector3>();
-	LineRenderer line;
-	public Turtle(LineRenderer line, float stepLength = 1f) {
-		this.line = line;
+	int theta;
+
+	public Turtle(float stepLength = 1f, int theta = 90) {
 		this.stepLength = stepLength;
+		this.theta = 90;
 	}
 
 	public void Render(string instructions) {
-		points.Clear();
-		position = Vector3.zero;
-		points.Add(Vector3.zero);
+		var position = Vector3.zero;
+		var angle = 90;
 		foreach(char c in instructions) {
+			var nextPosition = new Vector3(
+				position.x + Mathf.Cos(angle * Mathf.PI / 180) * stepLength,
+				position.y + Mathf.Sin(angle * Mathf.PI / 180) * stepLength,
+				position.z
+			);
+
 			switch(c) {
 				case 'F':
-					position.x = position.x + Mathf.Cos(theta * Mathf.PI / 180) * stepLength;
-					position.y = position.y + Mathf.Sin(theta * Mathf.PI / 180) * stepLength;
-					points.Add(new Vector3(position.x, position.y, position.z));
+					Debug.DrawLine(position, nextPosition, Color.magenta, .25f);
+					position.x = nextPosition.x;
+					position.y = nextPosition.y;
 					break;
 				case '+':
-					theta += 90;
+					angle += theta;
 					break;
 				case '-':
-					theta -= 90;
+					angle -= theta;
 					break;
+				case 'f':
+					position.x = nextPosition.x;
+					position.y = nextPosition.y;
+					break;
+				default:
+					throw new System.Exception($"Didn't understand character {c}");
 			}
 		}
-
-		line.positionCount = points.Count;
-		line.SetPositions(points.ToArray());
 	}
 }
