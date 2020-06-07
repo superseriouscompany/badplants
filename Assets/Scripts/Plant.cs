@@ -41,7 +41,7 @@ public class Plant : MonoBehaviour {
 		);
 
 
-		var kochCurve = quadraticIsland;
+		var kochCurve = islands;
 		lSystem = new LSystem(kochCurve.axiom, kochCurve.productions);
 		state = kochCurve.axiom;
 
