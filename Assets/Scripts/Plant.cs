@@ -24,7 +24,11 @@ public class Plant : MonoBehaviour {
 		turtle.Render(state);
 
 		lSystem = new LSystem(state, new Dictionary<char, string>() {
-			{'F', "F-F+F+FF-F-F+F"}
+			// quadratic Koch island
+			// {'F', "F-F+F+FF-F-F+F"}
+
+			// Koch triangle
+			{ 'F', "F+F-F-F+F"}
 		});
 	}
 
