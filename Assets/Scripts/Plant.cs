@@ -40,8 +40,15 @@ public class Plant : MonoBehaviour {
 			}
 		);
 
+		var final = new KochCurve(
+			"F-F-F-F",
+			new Dictionary<char, string>() {
+				{'F', "F-F+F-F-F"}
+			}
+		);
 
-		var kochCurve = islands;
+
+		var kochCurve = final;
 		lSystem = new LSystem(kochCurve.axiom, kochCurve.productions);
 		state = kochCurve.axiom;
 
