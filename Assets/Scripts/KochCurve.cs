@@ -9,3 +9,10 @@ public class KochCurve {
     this.productions = productions;
   }
 }
+
+public enum KochSample {
+  Quadratic,
+  Triangle,
+  Islands,
+  Final,
+}

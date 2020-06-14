@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Plant : MonoBehaviour {
 	public float turtleStepLength = 1f;
+	public KochSample sample;
+
 	string state;
 
 	Turtle turtle;
 	LSystem lSystem;
+	Dictionary<KochSample, KochCurve>  samples;
 
 	void OnValidate() {
 		if (!Application.isPlaying) { return; }
@@ -47,8 +50,14 @@ public class Plant : MonoBehaviour {
 			}
 		);
 
+		samples = new Dictionary<KochSample, KochCurve>() {
+			{KochSample.Quadratic, quadraticIsland},
+			{KochSample.Triangle, triangle},
+			{KochSample.Islands, islands},
+			{KochSample.Final, final}
+		};
 
-		var kochCurve = final;
+		var kochCurve = samples[sample];
 		lSystem = new LSystem(kochCurve.axiom, kochCurve.productions);
 		state = kochCurve.axiom;
 
