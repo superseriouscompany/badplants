@@ -10,53 +10,12 @@ public class Plant : MonoBehaviour {
 
 	Turtle turtle;
 	LSystem lSystem;
-	Dictionary<KochSample, KochCurve>  samples;
-
-	void OnValidate() {
-		if (!Application.isPlaying) { return; }
-		if (state == null) { return; }
-		turtle?.Render(state);
-	}
+	Dictionary<KochSample, KochCurve> samples;
 
 	void Start() {
 		turtle = new Turtle(turtleStepLength);
 
-		var quadraticIsland = new KochCurve(
-			"F-F-F-F",
-			new Dictionary<char, string>() {
-				{'F', "F-F+F+FF-F-F+F"}
-			}
-		);
-
-		var triangle = new KochCurve(
-			"-F",
-			new Dictionary<char, string>() {
-				{'F', "F+F-F-F+F"}
-			}
-		);
-
-		var islands = new KochCurve(
-			"F+F+F+F",
-			new Dictionary<char, string>() {
-				{'F', "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF"},
-				{'f', "ffffff"}
-			}
-		);
-
-		var final = new KochCurve(
-			"F-F-F-F",
-			new Dictionary<char, string>() {
-				{'F', "F-F+F-F-F"}
-			}
-		);
-
-		samples = new Dictionary<KochSample, KochCurve>() {
-			{KochSample.Quadratic, quadraticIsland},
-			{KochSample.Triangle, triangle},
-			{KochSample.Islands, islands},
-			{KochSample.Final, final}
-		};
-
+		LoadCurves();
 		var kochCurve = samples[sample];
 		lSystem = new LSystem(kochCurve.axiom, kochCurve.productions);
 		state = kochCurve.axiom;
@@ -68,6 +27,51 @@ public class Plant : MonoBehaviour {
 		if (Input.GetKeyUp(KeyCode.RightArrow)) {
 			state = lSystem.StepForward();
 		}
-		turtle.Render(state);
+	}
+
+	void OnPostRender() {
+		turtle?.Render(state);
+	}
+
+	void LoadCurves() {
+		samples = new Dictionary<KochSample, KochCurve>() {
+			{
+				KochSample.Quadratic,
+				new KochCurve(
+					"F-F-F-F",
+					new Dictionary<char, string>() {
+						{'F', "F-F+F+FF-F-F+F"}
+					}
+				)
+			},
+			{
+				KochSample.Triangle,
+				new KochCurve(
+					"-F",
+					new Dictionary<char, string>() {
+						{'F', "F+F-F-F+F"}
+					}
+				)
+			},
+			{
+				KochSample.Islands,
+				new KochCurve(
+					"F+F+F+F",
+					new Dictionary<char, string>() {
+						{'F', "F+f-FF+F+FF+Ff+FF-f+FF-F-FF-Ff-FFF"},
+						{'f', "ffffff"}
+					}
+				)
+			},
+			{
+				KochSample.Final,
+				new KochCurve(
+					"F-F-F-F",
+					new Dictionary<char, string>() {
+						{'F', "F-F+F-F-F"}
+					}
+				)
+			}
+		};
 	}
 }

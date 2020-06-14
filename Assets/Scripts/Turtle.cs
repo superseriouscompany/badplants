@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-
+using Shapes;
 public class Turtle {
 	public float stepLength;
 
@@ -9,6 +9,10 @@ public class Turtle {
 	public Turtle(float stepLength = 1f, int theta = 90) {
 		this.stepLength = stepLength;
 		this.theta = 90;
+		Draw.LineGeometry = LineGeometry.Volumetric3D;
+		Draw.LineThicknessSpace = ThicknessSpace.Pixels;
+		Draw.LineEndCaps = LineEndCap.Round;
+		Draw.LineThickness = 4;
 	}
 
 	public void Render(string instructions) {
@@ -23,7 +27,7 @@ public class Turtle {
 
 			switch(c) {
 				case 'F':
-					Debug.DrawLine(position, nextPosition, Color.magenta, .25f);
+					Draw.Line(position, nextPosition, Color.magenta);
 					position.x = nextPosition.x;
 					position.y = nextPosition.y;
 					break;
