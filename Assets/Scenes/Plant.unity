@@ -161,7 +161,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turtleStepLength: 1
-  sample: 0
+  sample: 4
 --- !u!20 &282840813
 Camera:
   m_ObjectHideFlags: 0

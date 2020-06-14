@@ -8,7 +8,7 @@ public class Turtle {
 
 	public Turtle(float stepLength = 1f, int theta = 90) {
 		this.stepLength = stepLength;
-		this.theta = 90;
+		this.theta = theta;
 		Draw.LineGeometry = LineGeometry.Volumetric3D;
 		Draw.LineThicknessSpace = ThicknessSpace.Pixels;
 		Draw.LineEndCaps = LineEndCap.Round;
@@ -26,8 +26,10 @@ public class Turtle {
 			);
 
 			switch(c) {
+				case 'R':
+				case 'L':
 				case 'F':
-					Draw.Line(position, nextPosition, Color.magenta);
+					Draw.Line(position, nextPosition, Color.red);
 					position.x = nextPosition.x;
 					position.y = nextPosition.y;
 					break;

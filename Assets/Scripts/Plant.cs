@@ -13,13 +13,12 @@ public class Plant : MonoBehaviour {
 	Dictionary<KochSample, KochCurve> samples;
 
 	void Start() {
-		turtle = new Turtle(turtleStepLength);
-
 		LoadCurves();
 		var kochCurve = samples[sample];
 		lSystem = new LSystem(kochCurve.axiom, kochCurve.productions);
 		state = kochCurve.axiom;
 
+		turtle = new Turtle(turtleStepLength, kochCurve.theta);
 		turtle.Render(state);
 	}
 
@@ -70,6 +69,17 @@ public class Plant : MonoBehaviour {
 					new Dictionary<char, string>() {
 						{'F', "F-F+F-F-F"}
 					}
+				)
+			},
+			{
+				KochSample.SierpinskiGasket,
+				new KochCurve(
+					"R",
+					new Dictionary<char, string>() {
+						{'L', "R+L+R"},
+						{'R', "L-R-L"}
+					},
+					60
 				)
 			}
 		};
