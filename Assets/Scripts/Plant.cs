@@ -19,12 +19,19 @@ public class Plant : MonoBehaviour {
 		state = kochCurve.axiom;
 
 		turtle = new Turtle(turtleStepLength, kochCurve.theta);
+		turtle.duration = 0.8f;
 		turtle.Render(state);
 	}
 
+	int transitions = 0;
 	void Update() {
 		if (Input.GetKeyUp(KeyCode.RightArrow)) {
 			state = lSystem.StepForward();
+			turtle.ResetAnimation();
+			turtle?.Render(state);
+			print($"topLeft={turtle.topLeft} bottomRight={turtle.bottomRight}");
+			var center = (turtle.bottomRight + turtle.topLeft) / 2;
+			transform.position = center.ToVector3(transform.position.z - (transitions++ * transitions * transitions));
 		}
 	}
 
