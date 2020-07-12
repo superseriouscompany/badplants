@@ -29,7 +29,6 @@ public class Plant : MonoBehaviour {
 			state = lSystem.StepForward();
 			turtle.ResetAnimation();
 			turtle?.Render(state);
-			print($"topLeft={turtle.topLeft} bottomRight={turtle.bottomRight}");
 			var center = (turtle.bottomRight + turtle.topLeft) / 2;
 			transform.position = center.ToVector3(transform.position.z - (transitions++ * transitions * transitions));
 		}

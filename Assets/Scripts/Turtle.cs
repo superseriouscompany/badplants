@@ -6,6 +6,11 @@ public class Turtle {
 	public float stepLength;
 	public float duration = 2;
 
+	/// <summary>
+	/// represents speed in unit vectors drawn per second
+	/// </summary>
+	public float speed = 3;
+
 	public Vector2 topLeft;
 	public Vector2 bottomRight;
 
@@ -29,29 +34,31 @@ public class Turtle {
 	public void Render(string instructions) {
 		var position = Vector3.zero;
 		var angle = 90;
+		float ink = speed * (Time.time - startTime);
 		var amount = Mathf.Min(1, duration * (Time.time - startTime));
+
 		foreach (char c in instructions) {
+			// calculate next position using angle and step length
 			var nextPosition = new Vector3(
 				position.x + Mathf.Cos(angle * Mathf.PI / 180) * stepLength,
 				position.y + Mathf.Sin(angle * Mathf.PI / 180) * stepLength,
 				position.z
 			);
 
-			if (nextPosition.x < topLeft.x) {
-				topLeft.x = nextPosition.x;
-			} else if (nextPosition.x > bottomRight.x) {
-				bottomRight.x = nextPosition.x;
-			}
-			if (nextPosition.y < topLeft.y) {
-				topLeft.y = nextPosition.y;
-			} else if (nextPosition.y > bottomRight.y) {
-				bottomRight.y = nextPosition.y;
-			}
+			// recalculate bounds of figure for camera framing
+			RecalculateBounds(nextPosition);
+
 			switch (c) {
 				case 'R':
 				case 'L':
 				case 'F':
-					Draw.Line(position, nextPosition * amount, Color.magenta);
+					// calculate how much of the line to draw
+					var difference = nextPosition - position;
+					var magnitude = 1 - Mathf.Clamp01(ink);
+					if (ink > 0) {
+						Draw.Line(position, nextPosition - (difference * magnitude), Color.magenta);
+						ink--;
+					}
 					position.x = nextPosition.x;
 					position.y = nextPosition.y;
 					break;
@@ -69,5 +76,18 @@ public class Turtle {
 					throw new System.Exception($"Didn't understand character {c}");
 			}
 		}
+	}
+
+	void RecalculateBounds(Vector3 nextPosition) {
+			if (nextPosition.x < topLeft.x) {
+				topLeft.x = nextPosition.x;
+			} else if (nextPosition.x > bottomRight.x) {
+				bottomRight.x = nextPosition.x;
+			}
+			if (nextPosition.y < topLeft.y) {
+				topLeft.y = nextPosition.y;
+			} else if (nextPosition.y > bottomRight.y) {
+				bottomRight.y = nextPosition.y;
+			}
 	}
 }
