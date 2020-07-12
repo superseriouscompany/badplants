@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Shapes;
+using System;
 
 public class Turtle {
 	public float stepLength;
@@ -14,6 +15,7 @@ public class Turtle {
 	public Vector2 topLeft;
 	public Vector2 bottomRight;
 
+	Stack<TurtleState> stack = new Stack<TurtleState>();
 	int theta;
 	float startTime;
 
@@ -33,7 +35,7 @@ public class Turtle {
 
 	public void Render(string instructions) {
 		var position = Vector3.zero;
-		var angle = 90;
+		var angle = 90f;
 		float ink = speed * (Time.time - startTime);
 		var amount = Mathf.Min(1, duration * (Time.time - startTime));
 
@@ -62,6 +64,17 @@ public class Turtle {
 					position.x = nextPosition.x;
 					position.y = nextPosition.y;
 					break;
+				case '[':
+					stack.Push(new TurtleState() {
+						position = position,
+						angle = angle
+					});
+					break;
+				case ']':
+					var state = stack.Pop();
+					position = state.position;
+					angle = state.angle;
+					break;
 				case '+':
 					angle += theta;
 					break;
@@ -73,7 +86,7 @@ public class Turtle {
 					position.y = nextPosition.y;
 					break;
 				default:
-					throw new System.Exception($"Didn't understand character {c}");
+					throw new Exception($"Didn't understand character {c}");
 			}
 		}
 	}

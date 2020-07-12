@@ -87,6 +87,14 @@ public class Plant : MonoBehaviour {
 					},
 					60
 				)
+			},
+			{
+				KochSample.BasicAxialTree,
+				new KochCurve(
+					"F[+F][-F[-F]F]F[+F][-F]",
+					new Dictionary<char, string>(),
+					45
+				)
 			}
 		};
 	}

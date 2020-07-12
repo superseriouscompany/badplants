@@ -19,4 +19,6 @@ public enum KochSample {
   Final,
 
   SierpinskiGasket,
+
+  BasicAxialTree
 }
