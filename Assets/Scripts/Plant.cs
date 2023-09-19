@@ -5,6 +5,7 @@ using UnityEngine;
 public class Plant : MonoBehaviour {
 	public float turtleStepLength = 1f;
 	public KochSample sample;
+	public Color color;
 
 	string state;
 
@@ -18,7 +19,7 @@ public class Plant : MonoBehaviour {
 		lSystem = new LSystem(kochCurve.axiom, kochCurve.productions);
 		state = kochCurve.axiom;
 
-		turtle = new Turtle(turtleStepLength, kochCurve.theta);
+		turtle = new Turtle(turtleStepLength, kochCurve.theta, color);
 		turtle.duration = 0.8f;
 		turtle.Render(state);
 	}
@@ -95,7 +96,37 @@ public class Plant : MonoBehaviour {
 					new Dictionary<char, string>(),
 					45
 				)
-			}
+			},
+			{
+				KochSample.PlantA,
+				new KochCurve(
+					"F",
+					new Dictionary<char, string>() {
+						{'F', "F[+F]F[-F]F"}
+					},
+					26
+				)
+			},
+			{
+				KochSample.PlantB,
+				new KochCurve(
+					"F",
+					new Dictionary<char, string>() {
+						{'F', "F[+F]F[-F][F]"}
+					},
+					20
+				)
+			},
+			{
+				KochSample.PlantC,
+				new KochCurve(
+					"F",
+					new Dictionary<char, string>() {
+						{'F', "FF-[-F+F+F]+[+F-F-F]"}
+					},
+					22
+				)
+			},
 		};
 	}
 }

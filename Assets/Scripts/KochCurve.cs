@@ -20,5 +20,11 @@ public enum KochSample {
 
   SierpinskiGasket,
 
-  BasicAxialTree
+  BasicAxialTree,
+  PlantA,
+  PlantB,
+  PlantC,
+  PlantD,
+  PlantE,
+  PlantF
 }

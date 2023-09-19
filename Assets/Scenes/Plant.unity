@@ -162,7 +162,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   turtleStepLength: 1
-  sample: 4
+  sample: 6
+  color: {r: 0.34174123, g: 0.6792453, b: 0.13136347, a: 1}
 --- !u!20 &282840813
 Camera:
   m_ObjectHideFlags: 0

@@ -4,13 +4,14 @@ using Shapes;
 using System;
 
 public class Turtle {
+	public Color color;
 	public float stepLength;
 	public float duration = 2;
 
 	/// <summary>
 	/// represents speed in unit vectors drawn per second
 	/// </summary>
-	public float speed = 3;
+	public float speed = 9;
 
 	public Vector2 topLeft;
 	public Vector2 bottomRight;
@@ -19,12 +20,13 @@ public class Turtle {
 	int theta;
 	float startTime;
 
-	public Turtle(float stepLength = 1f, int theta = 90) {
+	public Turtle(float stepLength = 1f, int theta = 90, Color color = new Color()) {
 		this.stepLength = stepLength;
 		this.theta = theta;
-		Draw.LineGeometry = LineGeometry.Volumetric3D;
+		this.color = color;
+		Draw.LineGeometry = LineGeometry.Flat2D;
 		Draw.LineThicknessSpace = ThicknessSpace.Pixels;
-		Draw.LineEndCaps = LineEndCap.Round;
+		Draw.LineEndCaps = LineEndCap.None;
 		Draw.LineThickness = 4;
 		ResetAnimation();
 	}
@@ -58,7 +60,7 @@ public class Turtle {
 					var difference = nextPosition - position;
 					var magnitude = 1 - Mathf.Clamp01(ink);
 					if (ink > 0) {
-						Draw.Line(position, nextPosition - (difference * magnitude), Color.magenta);
+						Draw.Line(position, nextPosition - (difference * magnitude), color);
 						ink--;
 					}
 					position.x = nextPosition.x;
